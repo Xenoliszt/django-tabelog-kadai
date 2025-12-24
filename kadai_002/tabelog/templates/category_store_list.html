@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block title %}{{ current_category.name }} | 店舗一覧{% endblock %}
+{% block content %}
+
+<div class="container my-4">
+
+  <div class="row">
+
+    <!-- ===================== -->
+    <!-- サイドメニュー（ジャンル検索） -->
+    <!-- ===================== -->
+    <div class="col-md-3 mb-4">
+
+      <!-- ===== フリーワード検索（追加） ===== -->
+      <h5 class="fw-bold mb-3">キーワード検索</h5>
+
+      <form method="get" class="mb-4">
+        <div class="input-group">
+          <input
+            type="text"
+            name="q"
+            class="form-control"
+            placeholder="店舗名・カテゴリ・食べ物"
+            value="{{ request.GET.q }}"
+          >
+          <button class="btn btn-primary" type="submit">
+            検索
+          </button>
+        </div>
+      </form>
+
+      <!-- ===== ジャンル検索 ===== -->
+      <h5 class="fw-bold mb-3">ジャンルから探す</h5>
+
+      <ul class="list-group mb-4">
+        {% for category in categories %}
+        <li class="list-group-item {% if category.id == current_category.id %}active{% endif %}">
+          <a
+            href="{% url 'tabelog:store_category' category.id %}"
+            class="text-decoration-none {% if category.id == current_category.id %}text-white{% else %}text-dark{% endif %}"
+          >
+            {{ category.name }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <!-- ===== 予算検索 ===== -->
+      <h5 class="fw-bold mb-3">予算から探す</h5>
+
+      <form method="get">
+        <div class="mb-3">
+          <select name="budget" class="form-select">
+            <option value="">予算を選択</option>
+            <option value="500" {% if selected_budget == "500" %}selected{% endif %}>〜500円</option>
+            <option value="1000" {% if selected_budget == "1000" %}selected{% endif %}>〜1000円</option>
+            <option value="1500" {% if selected_budget == "1500" %}selected{% endif %}>〜1500円</option>
+            <option value="2000" {% if selected_budget == "2000" %}selected{% endif %}>〜2000円</option>
+            <option value="2500" {% if selected_budget == "2500" %}selected{% endif %}>〜2500円</option>
+            <option value="3000" {% if selected_budget == "3000" %}selected{% endif %}>〜3000円</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+          検索
+        </button>
+      </form>
+
+    </div>
+
+    <!-- ===================== -->
+    <!-- メイン：店舗一覧（縦一列） -->
+    <!-- ===================== -->
+    <div class="col-md-9">
+
+      <h2 class="section-title mb-4">
+        ・{{ current_category.name }} の店舗一覧
+      </h2>
+
+      {% if stores %}
+        {% for store in stores %}
+        <div class="card mb-3 shadow-sm">
+
+          <div class="row g-0">
+
+            <!-- 店舗画像 -->
+            <div class="col-md-4">
+              {% if store.image %}
+                <img src="{{ store.image.url }}" class="img-fluid rounded-start">
+              {% endif %}
+            </div>
+
+            <!-- 店舗情報 -->
+            <div class="col-md-8">
+              <div class="card-body">
+
+                <h4 class="card-title">
+                  <a href="/store/{{ store.id }}/" class="text-decoration-none">
+                    {{ store.name }}
+                  </a>
+                </h4>
+
+                <p class="mb-1">
+                  <strong>ジャンル：</strong>{{ store.category.name }}
+                </p>
+
+                <p class="mb-1">
+                  <strong>食べ物：</strong>{{ store.food_category.name }}
+                </p>
+
+                <p class="mb-1">
+                  <strong>予算：</strong>{{ store.price }}
+                </p>
+
+                <p class="mb-1 text-muted">
+                  営業時間：{{ store.business_hours }}
+                </p>
+
+                <p class="mb-0 text-muted">
+                  定休日：{{ store.holiday }}
+                </p>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        {% endfor %}
+
+      {% else %}
+        <p class="text-muted">
+          この条件に該当する店舗はありません。
+        </p>
+      {% endif %}
+
+    </div>
+
+    <!-- 戻るボタン -->
+  <div class="mt-4">
+    <a href="{% url 'tabelog:store_list' %}" class="btn btn-secondary">
+      ← 店舗一覧へ戻る
+    </a>
+  </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
