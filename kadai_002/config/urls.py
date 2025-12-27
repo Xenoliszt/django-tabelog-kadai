@@ -14,20 +14,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
+
 from django.conf import settings
 from django.conf.urls.static import static
-
-
-
-
 from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    
 
+    path('', lambda request: redirect('store_list')),
     path('admin/', admin.site.urls),
 
     # 追加！
