@@ -24,7 +24,7 @@ from django.urls import path, include
 
 urlpatterns = [
 
-    path('', lambda request: redirect('store_list')),
+    path('', lambda request: redirect('tabelog:store_list')),
     path('admin/', admin.site.urls),
 
     # 追加！
