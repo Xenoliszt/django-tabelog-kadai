@@ -19,4 +19,5 @@ COPY kadai_002 /app
 RUN python manage.py collectstatic --noinput
 
 # Heroku 用 Gunicorn 起動
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["sh", "-c", "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"]
+
