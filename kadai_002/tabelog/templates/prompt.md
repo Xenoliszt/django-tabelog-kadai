@@ -9,6 +9,8 @@ Django 管理サイトでstoreにFood category:を二つ以上紐づけられる
 サンプル例
 
 
+
+
 以下はstore_list.html
 
 {% extends "base.html" %}
