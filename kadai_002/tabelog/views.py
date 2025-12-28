@@ -44,8 +44,8 @@ def food_category(request, food_category_id):
         stores = stores.filter(
             Q(name__icontains=q) |
             Q(category__name__icontains=q) |
-            Q(food_category__name__icontains=q)
-        )
+            Q(food_categories__name__icontains=q)
+        ).distinct()
 
     # 予算検索
     budget = request.GET.get("budget")
